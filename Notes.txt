@@ -1,0 +1,16 @@
+// 5. react-query-states video notes
+1. If the component is unmounted then the query will be in inactive state
+2. As the component mounts it fetches the query and goes into state
+3. Even if the app window/ browser tab is out focused and then in focused then als it will fetch and goes to stale
+4. stale means "not fresh", so as you go out and in it will fetch data again (as the data is not fresh, means it wants to fetch fresh data)
+5. fresh state means that the data fetched from query is recent/fresh. In this state if you do out and in focus it will not fetch data again 
+
+// 6. devtools explained video 
+1. "Observers : 1" means number of components using the query (in our case 1). Your query can be used in multiple components
+2. You can see current state and initial state 
+
+//7. Query keys
+1. If your query function depends on a variable, include it in your query key, as shown below
+  function Todos({ todoId }) {
+  const result = useQuery(['todos', todoId], () => fetchTodoById(todoId))
+}
