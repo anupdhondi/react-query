@@ -14,3 +14,7 @@
   function Todos({ todoId }) {
   const result = useQuery(['todos', todoId], () => fetchTodoById(todoId))
 }
+
+// 8. Dependent queries 
+As you cannot use "if else" statement to control the query, there is a third argument "enabled" if its true then query runs else if its false 
+then query won't run. if enabled is false then isIdle will be true and vice-versa.
