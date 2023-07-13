@@ -4,28 +4,30 @@ import './App.css';
 import { useQuery } from 'react-query';
 
 function App() {
-  const [show, setShow] = useState(false);
+  const [repoName, setRepoName] = useState('');
 
-  const { isIdle } = useQuery(
-    ['unique-key', show],
-    () => {
-      return new Promise((res, rej) => {
-        setTimeout(() => res(Math.random()), 1000);
-      });
-    },
-    {
-      enabled: show,
-    }
-  );
-  console.log(
-    '🚀 ~ file: App.js:16 ~ const{isIdle}=useQuery ~ isIdle:',
-    isIdle
-  );
+  const { isLoading, data } = useQuery(['unique-key', repoName], () => {
+    return fetch(`https://api.github.com/repos/${repoName}`).then((res) =>
+      res.json()
+    );
+  });
+
+  if (isLoading) {
+    return (
+      <div className="App">
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="App">
-      <br />
-      <button onClick={() => setShow(!show)}>toggle</button>
+      <div>
+        <input value={repoName} onChange={(e) => setRepoName(e.target.value)} />
+        <h2>{data.name}</h2>
+        <h2>{data.description}</h2>
+        <h2>{data.stargazers_count}</h2>
+      </div>
     </div>
   );
 }
