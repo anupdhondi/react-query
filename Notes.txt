@@ -22,3 +22,7 @@ then query won't run. if enabled is false then isIdle will be true and vice-vers
 // 10. creating a mini blog
 If you click on a particular post for 1st time then its shows loading but 2nd time it doesnot show loading it uses the cached data and shows the data.
 Even though it shows cached data but network request goes each time you visit the particular post  
+
+// 12. cache time in react
+cache time is used to determine how long query result will be available in the cache.
+If we put cacheTime as 0 then the query wont store data in cache
