@@ -26,3 +26,9 @@ Even though it shows cached data but network request goes each time you visit th
 // 12. cache time in react
 cache time is used to determine how long query result will be available in the cache.
 If we put cacheTime as 0 then the query wont store data in cache
+
+// 13. We can transfrom the query result using 'select' key 
+example -> useQuery(['posts'], url, {
+      select: (result) => result.slice(0, 5),
+    }
+  );
