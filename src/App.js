@@ -10,12 +10,8 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 function App() {
   const [postID, setPostID] = useState(null);
 
-  const { isLoading, data } = useQuery(
-    ['posts'],
-    () => fetcher(`https://jsonplaceholder.typicode.com/posts`),
-    {
-      select: (result) => result.slice(0, 5),
-    }
+  const { isLoading, data } = useQuery(['posts'], () =>
+    fetcher(`https://jsonplaceholder.typicode.com/posts`)
   );
 
   const clearPostID = () => setPostID(null);
@@ -32,6 +28,17 @@ function App() {
     );
   }
 
+  function mutateTitle(id) {
+    client.setQueryData(['post', id], (oldData) => {
+      if (oldData) {
+        return {
+          ...oldData,
+          title: 'I mutated it manually',
+        };
+      }
+    });
+  }
+
   return (
     <div className="App">
       <div>
@@ -45,6 +52,7 @@ function App() {
               <a onClick={() => setPostID(el.id)} href="#">
                 {el.id} - {el.title}
               </a>
+              <button onClick={() => mutateTitle(el.id)}>mutate title</button>
             </p>
           );
         })}

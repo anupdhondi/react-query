@@ -4,8 +4,12 @@ import { useQuery } from 'react-query';
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const Post = ({ postID, clearPostID }) => {
-  const { data, isLoading } = useQuery(['post', postID], () =>
-    fetcher(`https://jsonplaceholder.typicode.com/posts/${postID}`)
+  const { data, isLoading } = useQuery(
+    ['post', postID],
+    () => fetcher(`https://jsonplaceholder.typicode.com/posts/${postID}`),
+    {
+      staleTime: Infinity,
+    }
   );
 
   if (isLoading) {
@@ -19,6 +23,7 @@ const Post = ({ postID, clearPostID }) => {
       </a>
       <div>
         <h1>{data.id}</h1>
+        <p>{data.title}</p>
         <p>{data.body}</p>
       </div>
     </>

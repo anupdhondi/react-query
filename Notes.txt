@@ -32,3 +32,5 @@ example -> useQuery(['posts'], url, {
       select: (result) => result.slice(0, 5),
     }
   );
+
+  // 14. setQueryData is used to update/set the cached data
