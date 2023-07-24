@@ -10,8 +10,13 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 function App() {
   const [postID, setPostID] = useState(null);
 
-  const { isLoading, data } = useQuery(['posts'], () =>
-    fetcher(`https://jsonplaceholder.typicode.com/posts`)
+  const { isLoading, data } = useQuery(
+    ['posts'],
+    () => fetcher(`https://jsonplaceholder.typicode.com/posts`),
+    {
+      staleTime: Infinity,
+      cacheTime: 5000,
+    }
   );
 
   const clearPostID = () => setPostID(null);

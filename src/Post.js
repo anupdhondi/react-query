@@ -8,7 +8,7 @@ const Post = ({ postID, clearPostID }) => {
     ['post', postID],
     () => fetcher(`https://jsonplaceholder.typicode.com/posts/${postID}`),
     {
-      staleTime: 10000,
+      staleTime: Infinity,
       cacheTime: 5000,
     }
   );

@@ -38,6 +38,10 @@ example -> useQuery(['posts'], url, {
   // 15. Stale time and Cache time
    By default react query stale time : 0 seconds
    By default react query cache time : 300 seconds
-   stale time -> as react query fetches data it starts timer until that timer gets over the query will be in fresh state 
-                 after stale time completes it moves in fresh state
-   cache time -> The time for which it should keep stale data in memory before it clears the cache
+  StaleTime: The duration until a query transitions from fresh to stale. 
+             As long as the query is fresh, data will always be read from the cache only - no network request will happen! 
+             If the query is stale (which per default is: instantly), you will still get data from the cache, but a background refetch can happen under certain conditions.
+
+  CacheTime: The duration until inactive queries will be removed from the cache. 
+             This defaults to 5 minutes. Queries transition to the inactive state as soon as there are no observers registered, so when all components which use that query have unmounted.
+
