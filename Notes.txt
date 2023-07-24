@@ -20,5 +20,5 @@ As you cannot use "if else" statement to control the query, there is a third arg
 then query won't run. if enabled is false then isIdle will be true and vice-versa.
 
 // 10. creating a mini blog
-If you click on a particular post for 1st time then its shows loading but 2nd time it doesnot loading it uses the cached data and shows.
+If you click on a particular post for 1st time then its shows loading but 2nd time it doesnot show loading it uses the cached data and shows the data.
 Even though it shows cached data but network request goes each time you visit the particular post  
