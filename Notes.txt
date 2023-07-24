@@ -34,3 +34,10 @@ example -> useQuery(['posts'], url, {
   );
 
   // 14. setQueryData is used to update/set the cached data
+
+  // 15. Stale time and Cache time
+   By default react query stale time : 0 seconds
+   By default react query cache time : 300 seconds
+   stale time -> as react query fetches data it starts timer until that timer gets over the query will be in fresh state 
+                 after stale time completes it moves in fresh state
+   cache time -> The time for which it should keep stale data in memory before it clears the cache
