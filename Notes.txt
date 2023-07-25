@@ -45,3 +45,7 @@ example -> useQuery(['posts'], url, {
   CacheTime: The duration until inactive queries will be removed from the cache. 
              This defaults to 5 minutes. Queries transition to the inactive state as soon as there are no observers registered, so when all components which use that query have unmounted.
 
+  // 16. Mutations
+  In a mutation the intention is to create some change in the backend state. (e.g. creating a new record in a database, or updating an existing record).
+  It's the equivalent of a read (query) vs write (mutation) operation.
+   Mutations are not cached. They are driven with events
