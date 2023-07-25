@@ -6,11 +6,12 @@ import Post from './Post';
 import client from './react-query-client';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
-const timer = (duration) => {
+const timer = (duration, param) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
+      console.log('🚀 ~ file: App.js:10 ~ timer ~ param:', param);
       if (Math.random() > 0.5) {
-        resolve('succeeded');
+        resolve('Succefull');
       } else {
         reject('Rejected / Failed');
       }
@@ -19,7 +20,7 @@ const timer = (duration) => {
 };
 
 function App() {
-  const mutation = useMutation(() => timer(1000), {
+  const mutation = useMutation((param) => timer(1000, param), {
     onSuccess(data) {
       console.log('🚀 ~ file: App.js:20 ~ onSuccess ~ data:', data);
     },
@@ -32,13 +33,20 @@ function App() {
     },
   });
 
-  const mutationClicked = async () => {
+  const mutationClicked = () => {
     console.log('Callling Mutation');
-    try {
-      await mutation.mutateAsync();
-    } catch (error) {
-      console.log('🚀 ~ file: App.js:39 ~ mutationClicked ~ error:', error);
-    }
+    mutation.mutate('pass anything', {
+      onError(error) {
+        console.log('🚀 ~ file: App.js:39 ~ onError ~ error:', error);
+      },
+      onSuccess(data) {
+        console.log('🚀 ~ file: App.js:43 ~ onSuccess ~ data:', data);
+      },
+      onSettled(data, error) {
+        console.log('🚀 ~ file: App.js:47 ~ onSettled ~ error:', error);
+        console.log('🚀 ~ file: App.js:47 ~ onSettled ~ data:', data);
+      },
+    });
     console.log('Done...');
   };
 
