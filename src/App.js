@@ -2,57 +2,64 @@ import { useState } from 'react';
 import './App.css';
 
 import { useMutation, useQuery } from 'react-query';
-import Post from './Post';
 import client from './react-query-client';
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
-const timer = (duration, param) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      console.log('🚀 ~ file: App.js:10 ~ timer ~ param:', param);
-      if (Math.random() > 0.5) {
-        resolve('Succefull');
-      } else {
-        reject('Rejected / Failed');
-      }
-    }, duration);
+async function postData(url = '', data = {}) {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
   });
-};
+  return response.json();
+}
 
 function App() {
-  const mutation = useMutation((param) => timer(1000, param), {
+  const [lang, setLang] = useState('');
+
+  const mutation = useMutation((param) => postData('/addLang', param), {
     onSuccess(data) {
       console.log('🚀 ~ file: App.js:20 ~ onSuccess ~ data:', data);
+      client.invalidateQueries('favLangs');
     },
-    onError(data) {
-      console.log('🚀 ~ file: App.js:26 ~ onError ~ data:', data);
-    },
-    onSettled(data, error) {
-      console.log('🚀 ~ file: App.js:29 ~ onSettled ~ error:', error);
-      console.log('🚀 ~ file: App.js:29 ~ onSettled ~ data:', data);
+    onError(error) {
+      console.log('🚀 ~ file: App.js:15 ~ onError ~ error:', error);
     },
   });
 
+  const { data, isLoading, isError } = useQuery(
+    'favLangs',
+    () => fetch('/getLangs').then((res) => res.json()),
+    {
+      select: (data) => {
+        return data.favLangs;
+      },
+    }
+  );
+
   const mutationClicked = () => {
-    console.log('Callling Mutation');
-    mutation.mutate('pass anything', {
-      onError(error) {
-        console.log('🚀 ~ file: App.js:39 ~ onError ~ error:', error);
-      },
-      onSuccess(data) {
-        console.log('🚀 ~ file: App.js:43 ~ onSuccess ~ data:', data);
-      },
-      onSettled(data, error) {
-        console.log('🚀 ~ file: App.js:47 ~ onSettled ~ error:', error);
-        console.log('🚀 ~ file: App.js:47 ~ onSettled ~ data:', data);
-      },
-    });
-    console.log('Done...');
+    mutation.mutate({ record: lang });
+    setLang('');
   };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p style={{ color: 'red' }}>Error Occured</p>;
+  }
 
   return (
     <div className="App">
-      <p>Mutations</p>
+      <h1>My Favourite Languages</h1>
+      <ul>
+        {data.map((el) => (
+          <li>{el}</li>
+        ))}
+      </ul>
+      <input value={lang} onChange={(e) => setLang(e.target.value)} />
       <button onClick={mutationClicked}>Submit</button>
     </div>
   );
