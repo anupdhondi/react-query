@@ -51,6 +51,8 @@ example -> useQuery(['posts'], url, {
    Mutations are not cached. They are driven with events
 
 // Learnings from webdevsimplified react-query course
+Github link : https://github.com/WebDevSimplified/react-query-crash-course-example
+
 1. onMouseEnter/hover we can prefetch the api before actually landing on the page as shown below :
 queryClient.prefetchQuery({
       queryKey: ["posts", 1],
@@ -64,4 +66,25 @@ const postsQuery = useQuery({
     placeholderData: [{ id: 1, title: "Initial Data" }],
   })
 
-3.
+3. Paginate tabular data using react query
+const { status, error, data, isPreviousData } = useQuery({
+    queryKey: ["posts", { page }],
+    keepPreviousData: true,
+    queryFn: () => getPostsPaginated(page),
+  })
+keepPreviousData caches pages data
+
+4. Infinite loading data using react query
+
+const {
+    status,
+    error,
+    data,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["posts", "infinite"],
+    getNextPageParam: prevData => prevData.nextPage,
+    queryFn: ({ pageParam = 1 }) => getPostsPaginated(pageParam),
+  })
