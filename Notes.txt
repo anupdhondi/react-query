@@ -49,3 +49,19 @@ example -> useQuery(['posts'], url, {
   In a mutation the intention is to create some change in the backend state. (e.g. creating a new record in a database, or updating an existing record).
   It's the equivalent of a read (query) vs write (mutation) operation.
    Mutations are not cached. They are driven with events
+
+// Learnings from webdevsimplified react-query course
+1. onMouseEnter/hover we can prefetch the api before actually landing on the page as shown below :
+queryClient.prefetchQuery({
+      queryKey: ["posts", 1],
+      queryFn: () => getPost(1),
+    })
+
+2. We can have placeholder data as initial data as shown below
+const postsQuery = useQuery({
+    queryKey: ["posts"],
+    queryFn: getPosts,
+    placeholderData: [{ id: 1, title: "Initial Data" }],
+  })
+
+3.
